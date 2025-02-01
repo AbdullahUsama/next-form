@@ -52,7 +52,7 @@ export default function Home() {
         email: formData.email,
         details: formData.details,
       };
-
+      console.log(process.env.NEXT_PUBLIC_EMAILJS_USER_ID!);
       // Send email using EmailJS
       const result = await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, // Service ID
