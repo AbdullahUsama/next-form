@@ -1,5 +1,6 @@
 "use client";
 import { useState, ChangeEvent, FormEvent } from "react";
+import emailjs from "emailjs-com";
 
 interface FormData {
   name: string;
@@ -42,6 +43,34 @@ export default function Home() {
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("An error occurred while submitting the form.");
+    }
+
+    try {
+      // Convert formData to plain object (if necessary)
+      const dataToSend = {
+        name: formData.name,
+        email: formData.email,
+        details: formData.details,
+      };
+
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, // Service ID
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_1!, // Template ID
+        dataToSend, // Data to pass into the template
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID! // User ID
+      );
+      // Send second email
+      const result2 = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, // Service ID
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_2!, // Template ID
+        dataToSend, // Data to pass into the template
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID! // User ID
+      );
+      console.log("Email sent:", result.text);
+      console.log("Email sent:", result2.text);
+    } catch (error) {
+      console.error("Error sending email:", error);
     }
   };
 
